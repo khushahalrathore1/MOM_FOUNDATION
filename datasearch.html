@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>MOM Foundation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap 5 (for responsiveness) -->
+       <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- ===============================================--><!--    Document Title--><!-- ===============================================-->
+    <title>MOM Foundation</title>
+
+    <!-- ===============================================--><!--    Favicons--><!-- ===============================================-->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicons/favicon-16x16.png">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicons/favicon.ico">
+    <link rel="manifest" href="assets/img/favicons/manifest.json">
+    <meta name="msapplication-TileImage" content="assets/img/favicons/mstile-150x150.png">
+    <meta name="theme-color" content="#ffffff">
+    <script src="assets/js/config.js"></script>
+    <script src="vendors/simplebar/simplebar.min.js"></script>
+
+    <!-- ===============================================--><!--    Stylesheets--><!-- ===============================================-->
+    <link href="vendors/flatpickr/flatpickr.min.css" rel="stylesheet">
+    <link href="vendors/glightbox/glightbox.min.css" rel="stylesheet">
+    <link href="vendors/plyr/plyr.css" rel="stylesheet">
+    <link href="vendors/dropzone/dropzone.css" rel="stylesheet">
+    <link href="vendors/leaflet/leaflet.css" rel="stylesheet">
+    <link href="vendors/leaflet.markercluster/MarkerCluster.css" rel="stylesheet">
+    <link href="vendors/leaflet.markercluster/MarkerCluster.Default.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+    <link href="vendors/simplebar/simplebar.min.css" rel="stylesheet">
+    <link href="assets/css/theme-rtl.min.css" rel="stylesheet" id="style-rtl">
+    <link href="assets/css/theme.min.css" rel="stylesheet" id="style-default">
+    <link href="assets/css/user-rtl.min.css" rel="stylesheet" id="user-style-rtl">
+    <link href="assets/css/user.min.css" rel="stylesheet" id="user-style-default">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+
+  <!-- Custom Styles -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .btn-gradient-regular {
+      background: linear-gradient(-45deg, rgba(0, 160, 255, 0.86), #0048a2) !important;
+      color: #fff !important;
+      border: none !important;
+      margin-right: 5px;
+      border-radius: 6px;
+    }
+
+    .btn-gradient-regular:hover {
+      filter: brightness(1.1);
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+      text-align: center !important;
+      float: none !important;
+      margin-top: 20px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      margin: 0 4px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      background: #fff;
+      color: #333 !important;
+      font-size: 16px;
+      font-weight: 500;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+      background: #f5f5f5 !important;
+      color: #222 !important;
+      border-color: #ccc !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+      color: #1976d2 !important;
+      font-weight: bold;
+      border-color: #1976d2 !important;
+    }
+
+    .dataTables_info {
+      display: none;
+    }
+    table.dataTable tbody tr:nth-child(odd) {
+  background: linear-gradient(90deg, #e8f0fe, #f5faff);
+}
+
+table.dataTable tbody tr:nth-child(even) {
+  background: linear-gradient(90deg, #fff, #e0f7fa);
+}
+
+/* Add subtle hover effect */
+table.dataTable tbody tr:hover {
+  background-color: #d1eaff !important;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Optional: Add light border between rows */
+table.dataTable tbody tr {
+  border-bottom: 1px solid #dee2e6;
+}
+table.dataTable {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+  </style>
+</head>
+<body>
+
+  <h3 class="text-center mb-4">Children Table with Export & Pagination</h3>
+
+  <div class="table-responsive">
+    <table id="example" class="display nowrap table table-bordered table-striped dt-responsive" style="width:100%">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Age</th>
+          <th>Class</th>
+          <th>No</th>
+          <th>Address</th>
+          <th>School</th>
+          <th>Submit</th>
+          <th>Father Name</th>
+          <th>Mother Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Example 3 rows -->
+        
+  <tr>
+    <td>Ravi Meena</td>
+    <td>ravi@example.com</td>
+    <td>12</td>
+    <td>6th</td>
+    <td>1001</td>
+    <td>Udaipur, Rajasthan</td>
+    <td>Sunrise Public School</td>
+    <td>2024-06-01</td>
+    <td>Mahendra Meena</td>
+    <td>Suman Meena</td>
+  </tr>
+  <tr>
+    <td>Sara Ali</td>
+    <td>sara@example.com</td>
+    <td>14</td>
+    <td>8th</td>
+    <td>1002</td>
+    <td>Ajmer, Rajasthan</td>
+    <td>City Central School</td>
+    <td>2024-06-02</td>
+    <td>Arif Ali</td>
+    <td>Rehana Ali</td>
+  </tr>
+  <tr>
+    <td>Ajay Singh</td>
+    <td>ajay@example.com</td>
+    <td>11</td>
+    <td>5th</td>
+    <td>1003</td>
+    <td>Jaipur, Rajasthan</td>
+    <td>Gyan Vihar School</td>
+    <td>2024-06-03</td>
+    <td>Rajendra Singh</td>
+    <td>Preeti Singh</td>
+  </tr>
+  <tr>
+    <td>Neha Sharma</td>
+    <td>neha@example.com</td>
+    <td>13</td>
+    <td>7th</td>
+    <td>1004</td>
+    <td>Kota, Rajasthan</td>
+    <td>Tagore Academy</td>
+    <td>2024-06-04</td>
+    <td>Anil Sharma</td>
+    <td>Kavita Sharma</td>
+  </tr>
+  <tr>
+    <td>Vikas Jain</td>
+    <td>vikas@example.com</td>
+    <td>10</td>
+    <td>4th</td>
+    <td>1005</td>
+    <td>Alwar, Rajasthan</td>
+    <td>Holy Angel School</td>
+    <td>2024-06-05</td>
+    <td>Suresh Jain</td>
+    <td>Poonam Jain</td>
+  </tr>
+  <tr>
+    <td>Ravi Meena</td>
+    <td>ravi@example.com</td>
+    <td>12</td>
+    <td>6th</td>
+    <td>1001</td>
+    <td>Udaipur, Rajasthan</td>
+    <td>Sunrise Public School</td>
+    <td>2024-06-01</td>
+    <td>Mahendra Meena</td>
+    <td>Suman Meena</td>
+  </tr>
+  <tr>
+    <td>Sara Ali</td>
+    <td>sara@example.com</td>
+    <td>14</td>
+    <td>8th</td>
+    <td>1002</td>
+    <td>Ajmer, Rajasthan</td>
+    <td>City Central School</td>
+    <td>2024-06-02</td>
+    <td>Arif Ali</td>
+    <td>Rehana Ali</td>
+  </tr>
+  <tr>
+    <td>Ajay Singh</td>
+    <td>ajay@example.com</td>
+    <td>11</td>
+    <td>5th</td>
+    <td>1003</td>
+    <td>Jaipur, Rajasthan</td>
+    <td>Gyan Vihar School</td>
+    <td>2024-06-03</td>
+    <td>Rajendra Singh</td>
+    <td>Preeti Singh</td>
+  </tr>
+  <tr>
+    <td>Neha Sharma</td>
+    <td>neha@example.com</td>
+    <td>13</td>
+    <td>7th</td>
+    <td>1004</td>
+    <td>Kota, Rajasthan</td>
+    <td>Tagore Academy</td>
+    <td>2024-06-04</td>
+    <td>Anil Sharma</td>
+    <td>Kavita Sharma</td>
+  </tr>
+  <tr>
+    <td>Vikas Jain</td>
+    <td>vikas@example.com</td>
+    <td>10</td>
+    <td>4th</td>
+    <td>1005</td>
+    <td>Alwar, Rajasthan</td>
+    <td>Holy Angel School</td>
+    <td>2024-06-05</td>
+    <td>Suresh Jain</td>
+    <td>Poonam Jain</td>
+  </tr>
+  <tr>
+    <td>Ravi Meena</td>
+    <td>ravi@example.com</td>
+    <td>12</td>
+    <td>6th</td>
+    <td>1001</td>
+    <td>Udaipur, Rajasthan</td>
+    <td>Sunrise Public School</td>
+    <td>2024-06-01</td>
+    <td>Mahendra Meena</td>
+    <td>Suman Meena</td>
+  </tr>
+  <tr>
+    <td>Sara Ali</td>
+    <td>sara@example.com</td>
+    <td>14</td>
+    <td>8th</td>
+    <td>1002</td>
+    <td>Ajmer, Rajasthan</td>
+    <td>City Central School</td>
+    <td>2024-06-02</td>
+    <td>Arif Ali</td>
+    <td>Rehana Ali</td>
+  </tr>
+  <tr>
+    <td>Ajay Singh</td>
+    <td>ajay@example.com</td>
+    <td>11</td>
+    <td>5th</td>
+    <td>1003</td>
+    <td>Jaipur, Rajasthan</td>
+    <td>Gyan Vihar School</td>
+    <td>2024-06-03</td>
+    <td>Rajendra Singh</td>
+    <td>Preeti Singh</td>
+  </tr>
+  <tr>
+    <td>Neha Sharma</td>
+    <td>neha@example.com</td>
+    <td>13</td>
+    <td>7th</td>
+    <td>1004</td>
+    <td>Kota, Rajasthan</td>
+    <td>Tagore Academy</td>
+    <td>2024-06-04</td>
+    <td>Anil Sharma</td>
+    <td>Kavita Sharma</td>
+  </tr>
+  <tr>
+    <td>Vikas Jain</td>
+    <td>vikas@example.com</td>
+    <td>10</td>
+    <td>4th</td>
+    <td>1005</td>
+    <td>Alwar, Rajasthan</td>
+    <td>Holy Angel School</td>
+    <td>2024-06-05</td>
+    <td>Suresh Jain</td>
+    <td>Poonam Jain</td>
+  </tr>
+  <tr>
+    <td>Ravi Meena</td>
+    <td>ravi@example.com</td>
+    <td>12</td>
+    <td>6th</td>
+    <td>1001</td>
+    <td>Udaipur, Rajasthan</td>
+    <td>Sunrise Public School</td>
+    <td>2024-06-01</td>
+    <td>Mahendra Meena</td>
+    <td>Suman Meena</td>
+  </tr>
+  <tr>
+    <td>Sara Ali</td>
+    <td>sara@example.com</td>
+    <td>14</td>
+    <td>8th</td>
+    <td>1002</td>
+    <td>Ajmer, Rajasthan</td>
+    <td>City Central School</td>
+    <td>2024-06-02</td>
+    <td>Arif Ali</td>
+    <td>Rehana Ali</td>
+  </tr>
+  <tr>
+    <td>Ajay Singh</td>
+    <td>ajay@example.com</td>
+    <td>11</td>
+    <td>5th</td>
+    <td>1003</td>
+    <td>Jaipur, Rajasthan</td>
+    <td>Gyan Vihar School</td>
+    <td>2024-06-03</td>
+    <td>Rajendra Singh</td>
+    <td>Preeti Singh</td>
+  </tr>
+  <tr>
+    <td>Neha Sharma</td>
+    <td>neha@example.com</td>
+    <td>13</td>
+    <td>7th</td>
+    <td>1004</td>
+    <td>Kota, Rajasthan</td>
+    <td>Tagore Academy</td>
+    <td>2024-06-04</td>
+    <td>Anil Sharma</td>
+    <td>Kavita Sharma</td>
+  </tr>
+  <tr>
+    <td>Vikas Jain</td>
+    <td>vikas@example.com</td>
+    <td>10</td>
+    <td>4th</td>
+    <td>1005</td>
+    <td>Alwar, Rajasthan</td>
+    <td>Holy Angel School</td>
+    <td>2024-06-05</td>
+    <td>Suresh Jain</td>
+    <td>Poonam Jain</td>
+  </tr>
+        <!-- Add more dummy rows as needed -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- jQuery + Bootstrap + DataTables JS -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
+  <!-- DataTable Init -->
+  <script>
+    $(document).ready(function () {
+      $('#example').DataTable({
+        responsive: true,
+        dom: "<'d-flex justify-content-center mb-3'B>frtip",
+        buttons: [
+          { extend: 'copy', className: 'btn btn-gradient-regular' },
+          { extend: 'csv', className: 'btn btn-gradient-regular' },
+          { extend: 'excel', className: 'btn btn-gradient-regular' },
+          { extend: 'pdf', className: 'btn btn-gradient-regular' },
+          { extend: 'print', className: 'btn btn-gradient-regular' }
+        ],
+        pagingType: 'simple_numbers',
+        pageLength: 10,
+        language: {
+          paginate: {
+            previous: '<',
+            next: '>'
+          }
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
