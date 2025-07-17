@@ -88,20 +88,21 @@ table.dataTable tbody tr:hover {
 <body>
     <?php require('sidebar.php'); ?>
     <?php require('header.php'); ?>
-    <div class="card mb-3">
-      <div class="card-header">
-        <div class="row flex-between-end">
-          <div class="col-auto align-self-center">
-            <h5 class="mb-0" data-anchor="data-anchor">All Children Information</h5>
-          </div>
-          <div class="col-auto ms-auto d-flex align-items-center">
-            <a href="childern_management_form" >
-            <button class="btn btn-gradient-regular me-2 mb-1" type="button">
-            <span class="fas fa-users me-1" data-fa-transform="shrink-3"></span>Add Childern 
-          </button></a>
-          
-        </div>
+      <div class="card mb-3">
+  <div class="card-header">
+    <div class="row flex-between-end">
+      <div class="col-auto align-self-center">
+        <h5 class="mb-0">All Children Information</h5>
       </div>
+      <div class="col-auto ms-auto d-flex align-items-center">
+        <a href="donor_management_form.php">
+          <button class="btn btn-gradient-regular me-2 mb-1" type="button">
+            <span class="fas fa-user-plus me-1"></span> Add Donor
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
    <div class="table-responsive">
     <table id="example" class="display nowrap table table-bordered table-striped dt-responsive" style="width:100%">
       <thead>
