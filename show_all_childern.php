@@ -102,7 +102,6 @@ table.dataTable tbody tr:hover {
         </a>
       </div>
     </div>
-  </div>
    <div class="table-responsive">
     <table id="example" class="display nowrap table table-bordered table-striped dt-responsive" style="width:100%">
       <thead>

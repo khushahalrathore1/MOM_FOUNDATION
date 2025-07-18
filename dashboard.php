@@ -1,18 +1,25 @@
 <?php 
-
 require('config.php');
 
-$find_all_childern_rows = "SELECT * FROM `childern_forms` WHERE 1";
+// Total children
+$find_all_childern_rows = "SELECT * FROM `childern_forms`";
 $result = mysqli_query($mysqli, $find_all_childern_rows);
-if ($result) 
-{
-    $total_childern = mysqli_num_rows($result);
-    
-} else 
-{
-    $total_childern=0;
-}
+$total_childern = ($result) ? mysqli_num_rows($result) : 0;
 
+// Total donors
+$find_all_donor_rows = "SELECT * FROM `donor_managment`";
+$result_donor = mysqli_query($mysqli, $find_all_donor_rows);
+$total_donor = ($result_donor) ? mysqli_num_rows($result_donor) : 0;
+
+// Total foreigners
+$find_all_foreigner_rows = "SELECT * FROM `foreigner_managment`";
+$result_foreigner = mysqli_query($mysqli, $find_all_foreigner_rows);
+$total_foreigner = ($result_foreigner) ? mysqli_num_rows($result_foreigner) : 0;
+
+// Total volunteers
+$find_all_volunteer_rows = "SELECT * FROM `volunteer_managment`";
+$result_volunteer = mysqli_query($mysqli, $find_all_volunteer_rows);
+$total_volunteer = ($result_volunteer) ? mysqli_num_rows($result_volunteer) : 0;
 
 ?>
 
@@ -23,35 +30,54 @@ if ($result)
             </div>
           </div>
           <div class="row g-3 mb-3">
-            <div class="col-sm-6 col-md-4">
+            <div class="col-sm-6 col-md-3">
               <div class="card overflow-hidden" style="min-width: 12rem">
                 <div class="bg-holder bg-card" style="background-image:url(assets/img/icons/spot-illustrations/corner-1.png);"></div><!--/.bg-holder-->
                 <div class="card-body position-relative">
-                  <h6>Total Childern Registred</h6>
-                 <div class="display-4 fs-5 mb-2 fw-normal font-sans-serif text-warning">
-  <?php echo number_format($total_childern); ?>
-</div>
-<a class="fw-semi-bold fs-10 text-nowrap" href="show_all_childern.php">
-  See all<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span>
-</a>
+                  <h6 class="text-warning">Total Childern Registred</h6>
+                  <div class="display-4 fs-5 mb-2 fw-normal font-sans-serif text-warning">
+                    <?php echo number_format($total_childern); ?>
+                  </div>
+                  <a class="fw-semi-bold fs-10 text-nowrap text-warning" href="show_all_childern.php">
+                    See all Childern<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span>
+                  </a>
                 </div>
               </div>
             </div>
-            <div class="col-sm-6 col-md-4">
+            <div class="col-sm-6 col-md-3">
               <div class="card overflow-hidden" style="min-width: 12rem">
                 <div class="bg-holder bg-card" style="background-image:url(assets/img/icons/spot-illustrations/corner-2.png);"></div><!--/.bg-holder-->
                 <div class="card-body position-relative">
-                  <h6>Total Doner Registred<span class="badge badge-subtle-info rounded-pill ms-2">0.0%</span></h6>
-                  <div class="display-4 fs-5 mb-2 fw-normal font-sans-serif text-info" data-countup='{"endValue":23.434,"decimalPlaces":2,"suffix":"k"}'>0</div><a class="fw-semi-bold fs-10 text-nowrap" href="app/e-commerce/orders/order-list.html">All orders<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
+                  <h6>Total Doner Registred</h6>
+                  <div class="display-4 fs-5 mb-2 fw-normal font-sans-serif text-info">
+                     <?php echo number_format($total_donor); ?>
+                  </div>      
+                  <a class="fw-semi-bold fs-10 text-nowrap" href="">Sell All Donor
+                    <span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
                 </div>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="card overflow-hidden" style="min-width: 12rem">
                 <div class="bg-holder bg-card" style="background-image:url(assets/img/icons/spot-illustrations/corner-3.png);"></div><!--/.bg-holder-->
                 <div class="card-body position-relative">
-                  <h6>Total Volunteer Registred<span class="badge badge-subtle-success rounded-pill ms-2">9.54%</span></h6>
-                  <div class="display-4 fs-5 mb-2 fw-normal font-sans-serif" data-countup='{"endValue":43594,"prefix":"$"}'>0</div><a class="fw-semi-bold fs-10 text-nowrap" href="index.html">Statistics<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
+                  <h6 class="text-primary">Total Volunteer Registred</h6>
+                  <div class="display-4 fs-5 mb-2 fw-normal font-sans-serif text-primary"> <?php echo number_format($total_volunteer); ?></div>
+                  <a class="fw-semi-bold fs-10 text-nowrap" href="index.html">Sell All Volunteer<span class="fas fa-angle-right ms-1" data-fa-transform="down-1">
+
+                  </span></a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card overflow-hidden" style="min-width: 12rem">
+                <div class="bg-holder bg-card" style="background-image:url(assets/img/icons/spot-illustrations/corner-3.png);"></div><!--/.bg-holder-->
+                <div class="card-body position-relative">
+                  <h6 class="text-danger">Total Volunteer Foreigneer</h6>
+                  <div class="display-4 fs-5 mb-2 fw-normal font-sans-serif text-danger" > <?php echo number_format($total_foreigner); ?></div>
+                  <a class="fw-semi-bold fs-10 text-nowrap text-danger" href="index.html">Sell All Foreigneer<span class="fas fa-angle-right ms-1" data-fa-transform="down-1">
+
+                  </span></a>
                 </div>
               </div>
             </div>
@@ -60,7 +86,8 @@ if ($result)
             <div class="col-md-6 col-lg-4 col-xl-6 col-xxl-4">
               <div class="card h-md-100 ecommerce-card-min-width">
                 <div class="card-header pb-0">
-                  <h6 class="mb-0 mt-2 d-flex align-items-center">Total Foreigners Visitor<span class="ms-1 text-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Calculated according to last week's sales"><span class="far fa-question-circle" data-fa-transform="shrink-1"></span></span></h6>
+                  <h6 class="mb-0 mt-2 d-flex align-items-center">
+                      Total Foreigners Visitor<span class="far fa-question-circle" data-fa-transform="shrink-1"></span></span></h6>
                 </div>
                 <div class="card-body d-flex flex-column justify-content-end">
                   <div class="row">

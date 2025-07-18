@@ -51,12 +51,12 @@ require('config.php');
   <div class="card-header">
     <div class="row flex-between-end">
       <div class="col-auto align-self-center">
-        <h5 class="mb-0">All Donors Information</h5>
+        <h5 class="mb-0">All Volunteers Information</h5>
       </div>
       <div class="col-auto ms-auto d-flex align-items-center">
-        <a href="donor_management_form.php">
+        <a href="volunteer_managment_form.php">
           <button class="btn btn-gradient-regular me-2 mb-1" type="button">
-            <span class="fas fa-user-plus me-1"></span> Add Donor
+            <span class="fas fa-user-plus me-1"></span> Add New Volunteer
           </button>
         </a>
       </div>
@@ -64,52 +64,51 @@ require('config.php');
   <div class="table-responsive">
     <table id="donorsTable" class="display nowrap table table-bordered table-striped dt-responsive" style="width:100%">
       <thead>
-        <tr>
+             <tr>
           <th>Sr.No</th>
           <th>Name</th>
-          <th>Status</th>
-          <th>Occupation</th>
+          <th>Type</th>
+          <th>Status / Occupation</th>
           <th>Contact</th>
           <th>Email</th>
-          <th>Age/DOB</th>
+          <th>DOB / Age</th>
           <th>Visit Date</th>
-          <th>Donated Description</th>
+          <th>Address</th>
           <th>Reason</th>
-          <th>In Memory Of</th>
-          <th>Marital Status</th>
           <th>Photos</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        <?php
-        $query = "SELECT * FROM donor_managment ORDER BY donor_managment_id DESC";
+         <?php
+        $query = "SELECT * FROM volunteer_managment";
         $result = mysqli_query($mysqli, $query);
-        $i = 1;
+        $i=1;
         while ($row = mysqli_fetch_assoc($result)) {
           echo "<tr>";
-          echo "<td>".$i++."</td>";
-          echo "<td>".htmlspecialchars($row['donor_name'])."</td>";
-          echo "<td>".htmlspecialchars($row['donor_status'])."</td>";
-          echo "<td>".htmlspecialchars($row['occupation'])."</td>";
-          echo "<td>".htmlspecialchars($row['contact_no'])."</td>";
-          echo "<td>".htmlspecialchars($row['email'])."</td>";
-          echo "<td>".htmlspecialchars($row['age'])."<br>".htmlspecialchars($row['dob'])."</td>";
-          echo "<td>".htmlspecialchars($row['visit_date'])."</td>";
-          echo "<td>".htmlspecialchars($row['donated_description'])."</td>";
-          echo "<td>".htmlspecialchars($row['reason_for_donating'])."</td>";
-          echo "<td>".htmlspecialchars($row['memory_name'])."</td>";
-          echo "<td>".htmlspecialchars($row['marital_status'])."</td>";
+          echo "<td>" . $i++ . "</td>";
+          echo "<td>" . htmlspecialchars($row['volunteer_name']) . "</td>";
+          echo "<td>" . htmlspecialchars($row['volunteer_type']) . "</td>";
+          echo "<td>" . htmlspecialchars($row['volunteer_status']) . " / " . htmlspecialchars($row['volunteer_occupation']) . "</td>";
+          echo "<td>" . htmlspecialchars($row['contact_number']) . "</td>";
+          echo "<td>" . htmlspecialchars($row['email']) . "</td>";
+          echo "<td>" . htmlspecialchars($row['dob']) . "<br>Age: " . htmlspecialchars($row['age']) . "</td>";
+          echo "<td>" . htmlspecialchars($row['visit_date']) . "</td>";
+          echo "<td>" . htmlspecialchars($row['address']) . "</td>";
+          echo "<td>" . htmlspecialchars($row['volunteering_reason']) . "</td>";
+          
+          // Photos
           echo "<td>";
-          if ($row['event_photo_first']) {
-            echo "<img src='donor_uploads/".htmlspecialchars($row['event_photo_first'])."' width='50' height='50' style='border-radius:4px;margin-right:3px;'>";
-          }
-          if ($row['event_photo_second']) {
-            echo "<img src='donor_uploads/".htmlspecialchars($row['event_photo_second'])."' width='50' height='50' style='border-radius:4px;margin-right:3px;'>";
-          }
-          if ($row['event_photo_third']) {
-            echo "<img src='donor_uploads/".htmlspecialchars($row['event_photo_third'])."' width='50' height='50' style='border-radius:4px;'>";
-          }
+            if($row['volunteer_photo_first']) echo "<img src='photos_volunteer/".htmlspecialchars($row['volunteer_photo_first'])."' width='50' height='50' style='object-fit:cover;border-radius:5px;margin:2px;'>";
+            if($row['volunteer_photo_second']) echo "<img src='photos_volunteer/".htmlspecialchars($row['volunteer_photo_second'])."' width='50' height='50' style='object-fit:cover;border-radius:5px;margin:2px;'>";
+            if($row['volunteer_photo_third']) echo "<img src='photos_volunteer/".htmlspecialchars($row['volunteer_photo_third'])."' width='50' height='50' style='object-fit:cover;border-radius:5px;margin:2px;'>";
           echo "</td>";
+
+          // Action
+          echo "<td>
+                  <a href='#' class='btn btn-sm btn-gradient-regular'>Edit</a>
+                  <a href='#' class='btn btn-sm btn-danger'>Delete</a>
+                </td>";
           echo "</tr>";
         }
         ?>
@@ -117,7 +116,6 @@ require('config.php');
     </table>
   </div>
 </div>
-      </div>
 <?php require('footer.php'); ?>
 <!-- jQuery + Bootstrap + DataTables JS -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
