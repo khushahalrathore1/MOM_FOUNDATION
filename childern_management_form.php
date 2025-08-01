@@ -4,7 +4,26 @@
   <?php 
     require('style.php');
     require('script.php'); 
+if (isset($_GET['success']) && $_GET['uid']) {
+  echo "
+  <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    Swal.fire({
+      icon: 'success',
+      title: 'Form submitted successfully!',
+      html: '<br>Now Children User ID is For Login<br><br><b style=\"color:blue;\">' + " . json_encode($_GET['uid']) . " + '</b>',
+      confirmButtonText: 'OK'
+    }).then(() => {
+      window.location.href = 'show_all_childern.php';
+    });
+  });
+  </script>";
+}
+
+
   ?>
+
   <script>
 
     function currentstatus(current_status) {
@@ -172,20 +191,15 @@
               <label class="form-label" for="alternate_contact">Alternate Contact No.</label>
               <input class="form-control" id="alternate_contact" name="alternate_contact" type="text" />
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
               <label class="form-label" for="email">Email</label>
               <input class="form-control" id="email" name="email" type="email" required />
               <div class="invalid-feedback">Enter valid email.</div>
             </div>
-            <div class="col-sm-2">
-              <label class="form-label" for="current_education_status">Current education </label>
-              <select class="form-select" id="current_education_status" name="current_education_status" required>
-                <option  value="">--Select--</option>
-                <option value="School">School</option>
-                <option value="College">College</option>
-                <option value="Not Studying">Not Studying</option>
-              </select>
-              <div class="invalid-feedback">Please Select Current Status While Joining </div>
+            <div class="col-sm-3">
+              <label class="form-label" for="current_study_name">Current education</label>
+              <input class="form-control" id="current_education_status" name="current_education_status" type="text"  placeholder="School/Collage/ N/A" required/>
+              <div class="invalid-feedback">Enter Current Status While Joining</div>
             </div>
             <div class="col-sm-3">
               <label class="form-label" for="current_study_name">Name Where Studying</label>
@@ -194,10 +208,15 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-8">
               <label class="form-label" for="child_story">Story of the Child</label>
               <textarea class="form-control" id="child_story" name="child_story" rows="1" required></textarea>
-              <div class="invalid-feedback">Enter child's story.</div>
+              <div class="invalid-feedback">Enter child's Full Story.</div>
+            </div>
+            <div class="col-sm-4">
+              <label class="form-label" for="child_story">Child Status</label>
+              <textarea class="form-control" id="child_status" name="child_status" rows="1" required placeholder="Enter Child Status (Residential or Outsider Etc.)"></textarea>
+              <div class="invalid-feedback">Enter Child Status (Residential or Outsider Etc.)</div>
             </div>
           </div>
         </div>
@@ -205,14 +224,14 @@
     </div>
   </div>
   <div class="card">
-    <div class="card-header">
+    <!-- <div class="card-header">
       <div class="row flex-between-end">
         <div class="col-auto align-self-center">
           <h5 class="mb-0 text-primary">Left Home Information's</h5>
         </div>
       </div>
-    </div>
-    <div class="card-body bg-body-tertiary">
+    </div> -->
+    <!-- <div class="card-body bg-body-tertiary">
       <div class="tab-content">
         <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-5c05f5ab-f438-468c-8924-e15ebd1a9fa9" id="dom-5c05f5ab-f438-468c-8924-e15ebd1a9fa9">
           <div class="row">
@@ -274,7 +293,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="card">
     <div class="card-header">
       <div class="row flex-between-end">

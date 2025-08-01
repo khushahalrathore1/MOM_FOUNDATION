@@ -80,22 +80,46 @@ $stmt->bind_param(
     $name_where_studying, $child_story, $leaving_date, $leaving_reason, $leaving_to, $current_status,
     $occupation, $marital_status, $spouse_name, $spouse_occupation, $husband_living
 );
-
 if ($stmt->execute()) {
-    $insertedId = $stmt->insert_id;
+   $insertedId = $stmt->insert_id;
 
-    // Upload and save photo names
-    $child_group_photo = handleUpload('child_group_photo', 'child_group_photo', $child_unique_id, $insertedId);
-    $child_full_photo  = handleUpload('child_full_photo', 'child_full_photo', $child_unique_id, $insertedId);
-    $child_small_photo = handleUpload('child_small_photo', 'child_small_photo', $child_unique_id, $insertedId);
+
+    $first4Name = strtolower(substr(preg_replace('/\s+/', '', $child_first_name), 0, 4));
+    $first4Mobile = substr(preg_replace('/\D/', '', $contact_no), 0, 4);
+    $datePart = date("dmY");  // e.g., 23072025
+    $timePart = date("Hi");   // e.g., 0540
+
+    $new_child_unique_id = "{$first4Name}_{$insertedId}_{$first4Mobile}_{$datePart}{$timePart}";
+
+
+// Update child_unique_id in database
+$updateUniqueId = $mysqli->prepare("UPDATE childern_forms SET child_unique_id=? WHERE childern_form_id=?");
+if ($updateUniqueId) {
+    $updateUniqueId->bind_param('si', $new_child_unique_id, $insertedId);
+    $updateUniqueId->execute();
+    if ($updateUniqueId->affected_rows === 0) {
+        // debugging help
+        echo "Update failed: no rows updated.";
+    }
+    $updateUniqueId->close();
+} else {
+    die('Prepare failed: ' . $mysqli->error);
+}
+
+    // Upload and save photo names using new_child_unique_id
+    $child_group_photo = handleUpload('child_group_photo', 'child_group_photo', $new_child_unique_id, $insertedId);
+    $child_full_photo  = handleUpload('child_full_photo', 'child_full_photo', $new_child_unique_id, $insertedId);
+    $child_small_photo = handleUpload('child_small_photo', 'child_small_photo', $new_child_unique_id, $insertedId);
 
     $update = $mysqli->prepare("UPDATE childern_forms SET child_group_photo=?, child_full_photo=?, child_small_photo=? WHERE id=?");
     if ($update) {
         $update->bind_param('sssi', $child_group_photo, $child_full_photo, $child_small_photo, $insertedId);
         $update->execute();
+        $update->close();
     }
 
-    echo "<script>alert('Form submitted successfully!'); window.location.href='show_all_childern.php';</script>";
+   header("Location: childern_management_form.php?success=1&uid=" . urlencode($new_child_unique_id));
+exit;
 } else {
     echo "Error: " . $stmt->error;
 }

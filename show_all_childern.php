@@ -95,9 +95,9 @@ table.dataTable tbody tr:hover {
         <h5 class="mb-0">All Children Information</h5>
       </div>
       <div class="col-auto ms-auto d-flex align-items-center">
-        <a href="donor_management_form.php">
+        <a href="childern_management_form">
           <button class="btn btn-gradient-regular me-2 mb-1" type="button">
-            <span class="fas fa-user-plus me-1"></span> Add Donor
+            <span class="fas fa-user-plus me-1"></span> Add Childern
           </button>
         </a>
       </div>

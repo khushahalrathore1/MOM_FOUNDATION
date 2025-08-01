@@ -40,5 +40,5 @@
     <script src="../../vendors/prism/prism.js"></script>
     <script src="../../vendors/fontawesome/all.min.js"></script>
     <script src="../../vendors/list.js/list.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <?php require('customization.php');  ?>
