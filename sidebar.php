@@ -29,10 +29,10 @@
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-chart-pie"></span></span><span class="nav-link-text ps-1">Dashboard</span></div>
                   </a>
                   <ul class="nav collapse" id="dashboard">
-                    <li class="nav-item"><a class="nav-link" href="index.php">
+                    <li class="nav-item"><a class="nav-link" href="index">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Default</span></div>
                       </a><!-- more inner pages--></li>
-                    <li class="nav-item"><a class="nav-link" href="#">
+                    <li class="nav-item"><a class="nav-link" href="analytics">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Analytics</span></div>
                       </a><!-- more inner pages--></li>
                   </ul>

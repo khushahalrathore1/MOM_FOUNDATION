@@ -6,7 +6,38 @@ $total_childern = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM `childern
 $total_donor = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM `donor_managment`"));
 $total_foreigner = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM `foreigner_managment`"));
 $total_volunteer = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM `volunteer_managment`"));
+
+
+$today = date('m-d');
+$next7Days = date('m-d', strtotime('+7 days'));
+
+// If date range does not cross over to next year
+if ($today <= $next7Days) {
+    $sql = "
+        SELECT *, DATE_FORMAT(dob, '%d-%m') AS dob_formatted
+        FROM volunteer_managment
+        WHERE DATE_FORMAT(dob, '%m-%d') BETWEEN '$today' AND '$next7Days'
+        ORDER BY MONTH(dob), DAY(dob)
+    ";
+} else {
+    // If date range crosses over to next year
+    $sql = "
+        SELECT *, DATE_FORMAT(dob, '%d-%m') AS dob_formatted
+        FROM volunteer_managment
+        WHERE DATE_FORMAT(dob, '%m-%d') >= '$today'
+           OR DATE_FORMAT(dob, '%m-%d') <= '$next7Days'
+        ORDER BY MONTH(dob), DAY(dob)
+    ";
+}
+
+$result = mysqli_query($mysqli, $sql);
 ?>
+ <style>
+        table { border-collapse: collapse; width: 50%; margin: 20px auto; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+        .today { background-color: #ffeb3b; font-weight: bold; }
+    </style>
 
 <div class="d-flex mb-4 mt-3">
   <span class="fa-stack me-2 ms-n1">
@@ -76,108 +107,54 @@ $total_volunteer = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM `volunte
     </div>
   </div>
 </div>
+<div class="row g-3 mb-3">
+  <div class="col-sm-12 col-md-12">
+    <div class="card overflow-hidden">
+      <div class="card-body">
+        <h6 class="text-warning">Volunteer Birthday Notification</h6>
+          <h2 style="text-align:center;">🎂 Upcoming Birthdays (Next 7 Days)</h2>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>DOB</th>
+        <th>Age</th>
+        <th>Action</th>
+    </tr>
+    <?php
+    while ($row = mysqli_fetch_assoc($result)) {
+        $dob = $row['dob'];
+        $age = date_diff(date_create($dob), date_create('today'))->y;
+        $dobMonthDay = date('m-d', strtotime($dob));
+        $isToday = ($dobMonthDay == $today) ? 'today' : '';
+        
+        echo "<tr class='$isToday'>";
+        echo "<td>" . htmlspecialchars($row['volunteer_name']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['dob_formatted']) . "</td>";
+        echo "<td>" . $age . " Years</td>";
+echo "<td>
+    <button class='btn btn-success' onclick=\"sendSMS('" . addslashes($row['volunteer_name']) . "', '" . $row['dob_formatted'] . "')\">
+        <span class='fas fa-sms me-1'></span>
+    </button>
+</td>";
 
-<div class="col-xxl-12">
-  <div class="card h-100">
-    <div class="card-header d-flex justify-content-between align-items-center bg-body-tertiary">
-      <h6 class="mb-0">Total Children Registration Analytics</h6>
-      <select id="monthSelector" class="form-select form-select-sm" style="width:auto;"></select>
+        echo "</tr>";
+    }
+    ?>
+</table>
+
+<script>
+function sendSMS(name, dob) {
+    alert("SMS sent to " + name + " for birthday on " + dob);
+    // Here you can make an AJAX call to your SMS API
+}
+</script>
+        <a class="fw-semi-bold fs-10 text-nowrap text-warning" href="show_all_childern.php">
+          See all upcoming Birthday Information <span class="fas fa-angle-right ms-1"></span>
+        </a>
+      </div>
     </div>
-    <div class="card-body">
-      <canvas id="childrenChart" height="100"></canvas>
-    </div>
-  </div>
 </div>
+
 
 <!-- Include Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const monthSelector = document.getElementById('monthSelector');
-  const now = new Date();
-
-  // Fill last 6 months dropdown
-  for (let i = 0; i < 6; i++) {
-    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    const value = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); // YYYY-MM
-    const text = d.toLocaleString('default', { month: 'long', year: 'numeric' });
-    const option = new Option(text, value);
-    if (i === 0) option.selected = true;
-    monthSelector.add(option);
-  }
-
-  loadChart(monthSelector.value);
-
-  monthSelector.addEventListener('change', () => {
-    loadChart(monthSelector.value);
-  });
-});
-
-let chartInstance = null;
-
-function loadChart(selectedMonth) {
-  fetch('children_stats.php?month=' + selectedMonth)
-  .then(response => response.json())
-  .then(data => {
-    const today = new Date();
-    const currentMonth = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
-    const daysInMonth = (selectedMonth === currentMonth)
-      ? today.getDate()
-      : new Date(selectedMonth.split('-')[0], selectedMonth.split('-')[1], 0).getDate();
-
-    const labels = [];
-    const totals = [];
-    const colors = [];
-
-    for (let i = 1; i <= daysInMonth; i++) {
-      const day = String(i).padStart(2, '0');
-      const monthPart = selectedMonth.slice(5,7); // e.g., "07"
-      labels.push(day + '-' + monthPart);
-
-      const found = data.find(d => d.day.startsWith(day));
-      const total = found ? parseInt(found.total) : 0;
-      totals.push(total);
-      colors.push(total > 0 ? 'rgba(54, 162, 235, 1)' : 'red');
-    }
-
-    const ctx = document.getElementById('childrenChart').getContext('2d');
-    if (chartInstance) chartInstance.destroy();
-
-    chartInstance = new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: labels,
-    datasets: [{
-      label: 'Children Added',
-      data: totals,
-      fill: true,
-      borderColor: 'rgba(54, 162, 235, 1)',
-      backgroundColor: 'rgba(54, 162, 235, 0.2)',
-      tension: 0.3,
-      pointBackgroundColor: colors,
-      pointRadius: 8,
-      pointHoverRadius: 10,
-      pointBorderWidth: 2,
-      pointBorderColor: 'white'
-    }]
-  },
-  options: {
-    responsive: true,
-    scales: {
-      y: { beginAtZero: true, ticks: { precision: 0 } }
-    },
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: ctx => 'Total New Added: ' + ctx.parsed.y
-        }
-      }
-    }
-  }
-});
-
-  })
-  .catch(error => console.error('Error fetching stats:', error));
-}
-</script>
